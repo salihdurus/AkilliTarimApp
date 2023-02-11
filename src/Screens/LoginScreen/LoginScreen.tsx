@@ -29,7 +29,7 @@ const Auth = ({ navigation }: any) => {
             }
             else {
                 console.log(resData.token)
-                navigation.navigate("Home", { token: resData.token })
+                navigation.navigate("Home", { screen: "HomePage", params: { token: resData.token, name: resData.name } })
             }
         }
     }, [loading])

@@ -15,8 +15,8 @@ export default function ControlCenterScreen({ navigation, route }: any) {
 
     }
 
-    useEffect(() => { handleFetch();console.log("tetiklendi");
-     }, [])
+    useEffect(() => { handleFetch();
+     }, [route.params])
 
     if (!fetchLoading && !fetchError && resFetchData) {
         console.log(resFetchData.data)

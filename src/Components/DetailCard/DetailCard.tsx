@@ -1,6 +1,5 @@
 import React from 'react-native';
 import { View, Text, Image } from 'react-native';
-
 import styles from './DetailCard.style';
 import Button from '../Button';
 
@@ -11,11 +10,11 @@ export default function ScanCard({ numberOfTrees, numberOfDiseasedTrees, disease
                 <Image source={require("../../Assets/tree.png")} style={{ tintColor: "white" }} />
                 <View style={styles.content}>
                     <Text style={styles.descriptionText}>Ağaç Sayısı: {numberOfTrees > 0 ? numberOfTrees : "Tarama Gerekli"}</Text>
-                    <Text style={styles.descriptionText}>Hastalık Tespit Edilen Ağaç Sayısı: {numberOfDiseasedTrees?numberOfDiseasedTrees:"Tarama Gerekli"}</Text>
+                    <Text style={styles.descriptionText}>Hastalık Tespit Edilen Ağaç Sayısı: {numberOfDiseasedTrees ? numberOfDiseasedTrees : "Tarama Gerekli"}</Text>
                 </View>
             </View>
 
-            {diseasesDetected ? <View style={styles.body}>
+            {diseasesDetected && diseasesDetected.length > 0 ? <View style={styles.body}>
                 <Image source={require("../../Assets/virus.png")} style={{ tintColor: "white" }} />
                 <View style={styles.content}>
                     <Text style={[styles.descriptionText, { marginBottom: 5, }]}>Tespit Edilen Hastalıklar:</Text>
@@ -29,7 +28,7 @@ export default function ScanCard({ numberOfTrees, numberOfDiseasedTrees, disease
                 </View>
             </View> : <></>}
 
-            {diseasesDetected ? <View style={styles.body}>
+            {diseasesDetected && diseasesDetected.length > 0 ? <View style={styles.body}>
                 <Image source={require("../../Assets/medical.png")} style={{ tintColor: "white" }} />
                 <View style={styles.content}>
                     <Text style={[styles.descriptionText, { marginBottom: 5, }]}>Kullanılacak İlaçlar:</Text>
@@ -62,7 +61,7 @@ export default function ScanCard({ numberOfTrees, numberOfDiseasedTrees, disease
                     <Text style={[styles.descriptionText, { marginBottom: 15 }]}>Durum:</Text>
                     <Text style={[styles.descriptionText, { marginBottom: 20 }]}>{status}</Text>
                     <Text style={styles.descriptionText}>Sonraki Otomatik Tarama Tarihi:</Text>
-                    <Text style={styles.descriptionText}>{nextAutomaticScreeningTime?nextAutomaticScreeningTime:"İlk tarama gerçekleşmedi"}</Text>
+                    <Text style={styles.descriptionText}>{nextAutomaticScreeningTime ? nextAutomaticScreeningTime : "İlk tarama gerçekleşmedi"}</Text>
                 </View>
             </View>
 

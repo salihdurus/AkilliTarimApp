@@ -4,9 +4,6 @@ import { Formik } from 'formik';
 
 import Fab from './../../Components/Fab';
 import GardenCard from '../../Components/GardenCard';
-import ScanCard from '../../Components/ScanCard';
-import DetailCard from '../../Components/DetailCard';
-import SettingsCard from '../../Components/SettingsCard';
 import usePost from '../../Hooks/usePost';
 import useFetch from '../../Hooks/useFetch';
 
@@ -14,14 +11,17 @@ interface IGarden {
     id: String;
     name: String;
     status: String;
+    data: any,
 }
 
 export default function HomeScreen({ navigation, route }: any) {
 
     const { resData, loading, error, postData } = usePost();
-    // const { token } = route.params;
-    const token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2RjNTRlOWUzYzI1MTk1ODhiZjYzMjciLCJuYW1lIjoiU2FsaWgiLCJpYXQiOjE2NzYwNzAyNDAsImV4cCI6MTY3NjA3MTE0MH0.KXwPPVATgrBmghJoBWDKKBkOcgcu2ollP33Z-4Mqc1bXq1VEAaCAebVaMkeJBfhtntkyRFEGHFzAK-9S3SUP8w"
-    const { fetchData, fetchLoading, fetchError, resFetchData } = useFetch();
+    const { token, name } = route.params;
+    // console.log(route.params)
+    // const name="Salih"
+    // const token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2RjNTRlOWUzYzI1MTk1ODhiZjYzMjciLCJuYW1lIjoiU2FsaWgiLCJpYXQiOjE2NzYwODE3OTMsImV4cCI6MTY3NjA4MjY5M30.ppuzjFaCuQ8Hut1qgD4he8VncntzedLbfuKShx7pZ6PUg8HQkgm4UvN_XZOPefvrsgBTZulh-7WdXdCDgX6uDw"
+    const { fetchData, fetchLoading, fetchError, resFetchData }: any = useFetch();
     const handleSelectedGarden = (id: String, name: String) => {
         navigation.navigate("ControlCenter", { token, id, name })
     }
@@ -41,7 +41,14 @@ export default function HomeScreen({ navigation, route }: any) {
 
     useEffect((): void => {
         handleData();
+        navigation.addListener('beforeRemove', (e: any): any => {
+
+            // Prevent default behavior of leaving the screen
+            e.preventDefault();
+        }
+        )
     }, [])
+
     return (
         <NativeBaseProvider>
 
@@ -52,28 +59,13 @@ export default function HomeScreen({ navigation, route }: any) {
 
                         :
                         <>
-                            <Text fontSize={"lg"} mt={3}>Hoşgeldin Salih</Text>
+                            <Text fontSize={"lg"} mt={3}>Hoşgeldin {name}</Text>
                             <Box flex={1} justifyContent={"center"} alignSelf={"center"}>
                                 <Text fontSize={"md"} textAlign={"center"}>Henüz kayıtlı bahçen bulunmamaktadır.</Text>
                                 <Text fontSize={"md"} textAlign={"center"}>Hemen yeni bir tane eklemek için + ikonuna  dokun...</Text>
                             </Box>
                         </>
                 }
-
-
-                {/* <GardenCard name={"Bahçe 1"} description={"Durum: Tarandı ve 3 Ağaç Başarıyla İlaçlandı."} onPress={handleGardenContent} />
-                 */}
-                {/* <ScanCard lastScan={"25/05/2022"} scanType={"Kullanıcı İstekli Tarama"} onPress={handleGardenContent} />
-
-                <DetailCard
-                    numberOfTrees={"20"}
-
-                    numberOfDiseasedTrees={"3"}
-
-                    diseasesDetected={["3. Ağaç - Elma Küllemesi", "7. Ağaç - Kara Leke", "16. Ağaç - Ateş Yanıklığı"]}
-
-                    usedMedicinesToBe={["3. Ağaç - Luna Experience ® SC 400", "7. Ağaç - BASF Activus®", "16. Ağaç - %80 Fosetyl-Al"]} automaticSpraying={"Açık"}
-                    status={"Ağaçlar Başarıyla Tarandı ve İlaçlandı Sonraki Tarama Bekleniyor"} nextAutomaticScreeningTime={"29/05/2022"} sprayedTrees={["3. Ağaç Başarıyla İlaçlandı","7. Ağaç Başarıyla İlaçlandı",,"16. Ağaç Başarıyla İlaçlandı"]} /> */}
 
                 <Fab onPress={handlePress} />
                 <Modal isOpen={modalVisible} onClose={() => setModalVisible(!modalVisible)} avoidKeyboard safeAreaTop={true}  >
