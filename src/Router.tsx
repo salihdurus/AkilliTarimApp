@@ -6,11 +6,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FlashMessage from "react-native-flash-message";
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import AuthScreen from './Screens/LoginScreen';
-import RegisterScreen from "./Screens/RegisterScreen";
-import HomeScreen from "./Screens/HomeScreen";
-import ControlCenterScreen from "./Screens/ControlCenterScreen";
-import SettingsScreen from "./Screens/SettingsScreen";
+import AuthScreen from './screens/LoginScreen';
+import RegisterScreen from "./screens/RegisterScreen";
+import HomeScreen from "./screens/HomeScreen";
+import ControlCenterScreen from "./screens/ControlCenterScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+import UserProvider from "./context/Provider";
 
 const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createBottomTabNavigator<TabParams>();
@@ -40,13 +41,13 @@ function TabNavigator({ navigation, route }: any) {
         tabBarIcon: ({ focused }) => {
           let iconUrl;
           if (route.name == "HomePage") {
-            iconUrl = focused ? require("./Assets/home-selected.png") : require("./Assets/home.png")
+            iconUrl = focused ? require("./assets/home-selected.png") : require("./assets/home.png")
           }
           else if (route.name == "ControlCenter") {
-            iconUrl = focused ? require("./Assets/control-selected.png") : require("./Assets/control.png")
+            iconUrl = focused ? require("./assets/control-selected.png") : require("./assets/control.png")
           }
           else if (route.name == "Settings") {
-            iconUrl = focused ? require("./Assets/settings-selected.png") : require("./Assets/settings.png")
+            iconUrl = focused ? require("./assets/settings-selected.png") : require("./assets/settings.png")
           }
           return <Image source={iconUrl} />;
         },
@@ -94,7 +95,7 @@ function TabNavigator({ navigation, route }: any) {
               headerTitleAlign: "center",
               headerLeft: () => {
                 return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <MaterialIcon name="chevron-left" color={"white"} size={40} />
                   </TouchableOpacity>
                 )
@@ -110,7 +111,7 @@ function TabNavigator({ navigation, route }: any) {
               headerTitleAlign: "center",
               headerLeft: () => {
                 return (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <MaterialIcon name="chevron-left" color={"white"} size={40} />
                   </TouchableOpacity>
                 )
@@ -137,18 +138,20 @@ function TabNavigator({ navigation, route }: any) {
 
 export default function Router({ navigation, route }: any) {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Auth">
-        <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Auth">
+          <Stack.Screen name="Auth" component={AuthScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name="Home" component={TabNavigator} options={{
-          headerShown: false
-        }} />
+          <Stack.Screen name="Home" component={TabNavigator} options={{
+            headerShown: false
+          }} />
 
-      </Stack.Navigator>
-      <FlashMessage position="top" />
-    </NavigationContainer>
+        </Stack.Navigator>
+        <FlashMessage position="top" />
+      </NavigationContainer>
+    </UserProvider>
   );
 }

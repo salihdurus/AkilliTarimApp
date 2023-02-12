@@ -1,10 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-export default function SettingsScreen(){
-    return(
-        <View>
-            
+import SettingsCard from '../../components/SettingsCard';
+
+export default function SettingsScreen() {
+    return (
+        <View style={{ flex: 1 }}>
+            <SettingsCard />
         </View>
     );
 }

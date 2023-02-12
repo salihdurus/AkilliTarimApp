@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { NativeBaseProvider, Box, Image, VStack, Input, Icon, Pressable, Button, ScrollView } from 'native-base';
 import { Dimensions } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-const img = require("../../Assets/register.jpg");
-import usePost from "../../Hooks/usePost";
+const img = require("../../assets/register.jpg");
+import usePost from "../../hooks/usePost";
 import { Formik } from 'formik';
 import { showMessage } from "react-native-flash-message";
 

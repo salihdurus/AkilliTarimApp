@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { NativeBaseProvider, Text, Box, Image, VStack, Input, Icon, Pressable, Button, ScrollView } from 'native-base';
+import { NativeBaseProvider, Box, Image, Input, Icon, Pressable, Button, ScrollView } from 'native-base';
 import { Dimensions } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Formik } from 'formik'
 import { showMessage } from "react-native-flash-message";
+import { useDispatch } from 'react-redux';
 
-import usePost from "../../Hooks/usePost";
-const img = require("../../Assets/auth.jpg");
+import usePost from "../../hooks/usePost";
+const img = require("../../assets/auth.jpg");
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
@@ -19,6 +20,8 @@ const Auth = ({ navigation }: any) => {
 
     const handleLogin = (values: any) => postData("/login", values)
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (!loading && resData) {
             if (error) {
@@ -28,8 +31,9 @@ const Auth = ({ navigation }: any) => {
                 })
             }
             else {
-                console.log(resData.token)
-                navigation.navigate("Home", { screen: "HomePage", params: { token: resData.token, name: resData.name } })
+                dispatch({ type: "ADD_TOKEN", payload: { token: resData.token } });
+                dispatch({ type: "ADD_USERNAME", payload: { userName: resData.name } })
+                navigation.navigate("Home", { screen: "HomePage" })
             }
         }
     }, [loading])

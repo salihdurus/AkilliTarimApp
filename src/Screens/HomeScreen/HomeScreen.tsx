@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { NativeBaseProvider, Text, Box, FlatList, Modal, Input, Button, ScrollView } from 'native-base';
 import { Formik } from 'formik';
+import { useSelector } from 'react-redux';
 
-import Fab from './../../Components/Fab';
-import GardenCard from '../../Components/GardenCard';
-import usePost from '../../Hooks/usePost';
-import useFetch from '../../Hooks/useFetch';
+import Fab from './../../components/Fab';
+import GardenCard from '../../components/GardenCard';
+import usePost from '../../hooks/usePost';
+import useFetch from '../../hooks/useFetch';
 
 interface IGarden {
     id: String;
@@ -15,12 +16,9 @@ interface IGarden {
 }
 
 export default function HomeScreen({ navigation, route }: any) {
-
+    const token = useSelector((s: any) => s.userToken);
+    const name = useSelector((s: any) => s.userName);
     const { resData, loading, error, postData } = usePost();
-    const { token, name } = route.params;
-    // console.log(route.params)
-    // const name="Salih"
-    // const token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2RjNTRlOWUzYzI1MTk1ODhiZjYzMjciLCJuYW1lIjoiU2FsaWgiLCJpYXQiOjE2NzYwODE3OTMsImV4cCI6MTY3NjA4MjY5M30.ppuzjFaCuQ8Hut1qgD4he8VncntzedLbfuKShx7pZ6PUg8HQkgm4UvN_XZOPefvrsgBTZulh-7WdXdCDgX6uDw"
     const { fetchData, fetchLoading, fetchError, resFetchData }: any = useFetch();
     const handleSelectedGarden = (id: String, name: String) => {
         navigation.navigate("ControlCenter", { token, id, name })
@@ -32,7 +30,7 @@ export default function HomeScreen({ navigation, route }: any) {
     const handlePress = () => {
         setModalVisible(true);
     }
-    const handleAddGarden = (values: any) => {
+    const handleAddGarden = (values: any): void => {
         const reqData = { "name": values.name, "border": { "x": values.x, "y": values.y } };
         postData("/add-garden", reqData, token);
         setModalVisible(false);
@@ -42,8 +40,6 @@ export default function HomeScreen({ navigation, route }: any) {
     useEffect((): void => {
         handleData();
         navigation.addListener('beforeRemove', (e: any): any => {
-
-            // Prevent default behavior of leaving the screen
             e.preventDefault();
         }
         )
@@ -113,6 +109,6 @@ export default function HomeScreen({ navigation, route }: any) {
                 </Modal>
             </Box>
 
-        </NativeBaseProvider>
+        </NativeBaseProvider >
     )
 }

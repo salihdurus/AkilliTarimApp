@@ -45,10 +45,11 @@ export default StyleSheet.create({
     slotsContainer: {
         borderWidth: 1,
         borderColor: "blue",
+        borderRadius:15,
         padding: 15,
-        paddingTop: 0,
+        paddingTop: 10,
         margin: 20,
-        marginHorizontal:20,
+        marginHorizontal:15,
     },
     slotsContent: {
         flexDirection: "row",
