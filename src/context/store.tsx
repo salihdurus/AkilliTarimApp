@@ -1,4 +1,6 @@
 export default {
     userToken: "",
-    userName:"",
+    userName: "",
+    gardenId: "",
+    gardenName: "",
 }

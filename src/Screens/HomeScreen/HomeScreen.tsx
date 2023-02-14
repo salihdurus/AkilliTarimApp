@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NativeBaseProvider, Text, Box, FlatList, Modal, Input, Button, ScrollView } from 'native-base';
 import { Formik } from 'formik';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Fab from './../../components/Fab';
 import GardenCard from '../../components/GardenCard';
@@ -16,12 +16,15 @@ interface IGarden {
 }
 
 export default function HomeScreen({ navigation, route }: any) {
+    const dispatch = useDispatch();
     const token = useSelector((s: any) => s.userToken);
     const name = useSelector((s: any) => s.userName);
     const { resData, loading, error, postData } = usePost();
     const { fetchData, fetchLoading, fetchError, resFetchData }: any = useFetch();
     const handleSelectedGarden = (id: String, name: String) => {
-        navigation.navigate("ControlCenter", { token, id, name })
+        dispatch({ type: "ADD_GARDEN", payload: { gardenId: id, gardenName: name } });
+
+        navigation.navigate("ControlStack", { screen: "ControlCenter", params: { token, id, name } })
     }
     const handleData = () => {
         fetchData("/get-gardens", token);

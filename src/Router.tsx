@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FlashMessage from "react-native-flash-message";
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector } from 'react-redux'
 
 import AuthScreen from './screens/LoginScreen';
 import RegisterScreen from "./screens/RegisterScreen";
@@ -12,6 +13,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ControlCenterScreen from "./screens/ControlCenterScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import UserProvider from "./context/Provider";
+import DetailsScreen from "./screens/DetailsScreen";
 
 const Stack = createNativeStackNavigator<StackParams>();
 const Tab = createBottomTabNavigator<TabParams>();
@@ -21,12 +23,16 @@ export type StackParams = {
   Auth: any,
   Register: any,
   Home: any,
+  ControlStack: any,
+  ControlCenter: any,
+  Details: any
 }
 export type TabParams = {
   name: any,
   HomePage: any,
   ControlCenter: any,
   Settings: any
+  ControlStack: any,
 }
 
 export type routeParams = {
@@ -34,8 +40,61 @@ export type routeParams = {
   name: String
 }
 
-function TabNavigator({ navigation, route }: any) {
+function ControlStack({ navigation }: any) {
+  const name = useSelector((s: any) => s.gardenName);
   return (
+    <Stack.Navigator>
+      <Stack.Screen name="ControlCenter" component={ControlCenterScreen}
+        options={
+          ({
+            title: name, headerStyle: {
+              backgroundColor: "#C28B52",
+            },
+            headerTintColor: "white",
+            headerTitleStyle: {
+              fontSize: 22,
+            },
+            headerTitleAlign: "center",
+            headerLeft: () => {
+              return (
+                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+                  <MaterialIcon name="chevron-left" color={"white"} size={40} />
+                </TouchableOpacity>
+              )
+            }
+          }
+
+          )} />
+      <Stack.Screen name="Details" component={DetailsScreen}
+
+        options={{
+          title: "Ayrıntılar", headerStyle: {
+            backgroundColor: "#C28B52",
+          },
+          headerTintColor: "white",
+          headerTitleStyle: {
+            fontSize: 22,
+          },
+          headerTitleAlign: "center",
+          headerLeft: () => {
+            return (
+              <TouchableOpacity onPress={() => navigation.navigate("ControlCenter")}>
+                <MaterialIcon name="chevron-left" color={"white"} size={40} />
+              </TouchableOpacity>
+            )
+
+          }
+
+        }}
+
+      />
+    </Stack.Navigator >
+  );
+}
+
+function TabNavigator() {
+  return (
+
     <Tab.Navigator initialRouteName="HomePage" screenOptions={
       ({ route }) => ({
         tabBarIcon: ({ focused }) => {
@@ -43,7 +102,7 @@ function TabNavigator({ navigation, route }: any) {
           if (route.name == "HomePage") {
             iconUrl = focused ? require("./assets/home-selected.png") : require("./assets/home.png")
           }
-          else if (route.name == "ControlCenter") {
+          else if (route.name == "ControlStack") {
             iconUrl = focused ? require("./assets/control-selected.png") : require("./assets/control.png")
           }
           else if (route.name == "Settings") {
@@ -76,49 +135,13 @@ function TabNavigator({ navigation, route }: any) {
         headerTitleAlign: "center",
       }
       } />
-      <Tab.Screen name="ControlCenter" component={ControlCenterScreen}
+      <Tab.Screen name="ControlStack" component={ControlStack} options={{ headerShown: false }}
         listeners={
           ({ route }) => (
             route.params === undefined ? { tabPress: e => e.preventDefault() } : { tabPress: e => e.defaultPrevented }
           )
         }
-        options={
-          ({ route }) => (
-            route.params === undefined ? {
-              title: "", headerStyle: {
-                backgroundColor: "#C28B52",
-              },
-              headerTintColor: "white",
-              headerTitleStyle: {
-                fontSize: 22,
-              },
-              headerTitleAlign: "center",
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
-                    <MaterialIcon name="chevron-left" color={"white"} size={40} />
-                  </TouchableOpacity>
-                )
-              }
-            } : {
-              title: route.params.name, headerStyle: {
-                backgroundColor: "#C28B52",
-              },
-              headerTintColor: "white",
-              headerTitleStyle: {
-                fontSize: 22,
-              },
-              headerTitleAlign: "center",
-              headerLeft: () => {
-                return (
-                  <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
-                    <MaterialIcon name="chevron-left" color={"white"} size={40} />
-                  </TouchableOpacity>
-                )
-              }
-            }
-
-          )} />
+      />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{
         title: "Ayarlar",
         headerStyle: {
@@ -131,12 +154,15 @@ function TabNavigator({ navigation, route }: any) {
         headerTitleAlign: "center",
       }
       } />
+
+
     </Tab.Navigator >
+
   );
 }
 
 
-export default function Router({ navigation, route }: any) {
+export default function Router() {
   return (
     <UserProvider>
       <NavigationContainer>

@@ -6,6 +6,12 @@ export default function (state, action) {
         case "ADD_USERNAME":
             const { userName } = action.payload;
             return { ...state, userName };
+        case "ADD_GARDEN":
+            const { gardenId, gardenName } = action.payload;
+            console.log({ ...state, gardenId, gardenName });
+
+            return { ...state, gardenId, gardenName }
+
         default:
             return { ...state };
     }

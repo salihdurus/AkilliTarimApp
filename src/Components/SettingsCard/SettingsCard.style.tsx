@@ -7,7 +7,8 @@ export default StyleSheet.create({
         backgroundColor: "#9E8A7F",
         borderRadius: 15,
         marginTop: 15,
-        borderColor: "#707070"
+        borderColor: "#707070",
+        marginBottom:5,
     },
     body: {
         flexDirection: "row",
@@ -44,7 +45,7 @@ export default StyleSheet.create({
     },
     slotsContainer: {
         borderWidth: 1,
-        borderColor: "blue",
+        borderColor: "white",
         borderRadius:15,
         padding: 15,
         paddingTop: 10,

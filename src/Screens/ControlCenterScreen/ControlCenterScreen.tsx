@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { NativeBaseProvider, ScrollView, Text } from 'native-base';
+import { useSelector } from 'react-redux'
 
 import DetailCard from "../../components/DetailCard";
 import ScanCard from "../../components/ScanCard";
 import useFetch from "../../hooks/useFetch";
 
 export default function ControlCenterScreen({ navigation, route }: any) {
-    const { token, id } = route.params;
+    // const { token, id } = route.params;
+    const token = useSelector((s: any) => s.userToken);
+    const id = useSelector((s: any) =>  s.gardenId )
+
+    
     const { resFetchData, fetchLoading, fetchError, fetchData }: any = useFetch();
 
     const handleFetch = () => {
@@ -18,7 +23,7 @@ export default function ControlCenterScreen({ navigation, route }: any) {
     }, [route.params])
 
     const handleDiseaseDetected = () => {
-        console.log("Basıldı");
+        navigation.navigate("Details",{data:resFetchData.data});
 
     }
     if (!fetchLoading && !fetchError && resFetchData) {
