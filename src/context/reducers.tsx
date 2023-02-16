@@ -1,4 +1,4 @@
-export default function (state, action) {
+export default function (state: any, action: any) {
     switch (action.type) {
         case "ADD_TOKEN":
             const { token } = action.payload;
@@ -8,10 +8,7 @@ export default function (state, action) {
             return { ...state, userName };
         case "ADD_GARDEN":
             const { gardenId, gardenName } = action.payload;
-            console.log({ ...state, gardenId, gardenName });
-
             return { ...state, gardenId, gardenName }
-
         default:
             return { ...state };
     }

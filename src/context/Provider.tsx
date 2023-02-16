@@ -4,7 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import reducers from './reducers';
 import initialState from './store';
 
-const UserProvider = ({ children }) => {
+const UserProvider = ({ children }: any) => {
     const store = configureStore({ reducer: reducers, preloadedState: initialState });
     return (
         <Provider store={store}>

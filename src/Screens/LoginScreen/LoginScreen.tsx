@@ -50,7 +50,7 @@ const Auth = ({ navigation }: any) => {
                 <Box flex={1} width={windowWidth / 1.2} alignSelf={"center"} mt={10} alignItems={"center"} justifyContent="center">
 
                     <Formik
-                        initialValues={{ email: "", password: "" }}
+                        initialValues={{ email: "durussalih@gmail.com", password: "asdf123" }}
                         onSubmit={handleLogin}
                     >
                         {({ handleChange, handleSubmit, values }) =>

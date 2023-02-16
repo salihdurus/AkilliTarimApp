@@ -31,7 +31,7 @@ export type TabParams = {
   name: any,
   HomePage: any,
   ControlCenter: any,
-  Settings: any
+  Settings: any,
   ControlStack: any,
 }
 
@@ -143,6 +143,7 @@ function TabNavigator() {
         }
       />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{
+        unmountOnBlur: true,
         title: "Ayarlar",
         headerStyle: {
           backgroundColor: "#C28B52",

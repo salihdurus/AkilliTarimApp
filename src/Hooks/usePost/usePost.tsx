@@ -21,7 +21,7 @@ const usePost = () => {
                 .catch((err) => {
                     setError(true);
                     setResData(err.response.data.message);
-                    // console.log(err);
+                    console.log(err);
                     setLoading(false);
                 });
         }

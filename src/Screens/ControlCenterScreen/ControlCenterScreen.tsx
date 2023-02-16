@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NativeBaseProvider, ScrollView, Text } from 'native-base';
+import { NativeBaseProvider, ScrollView, Text, Modal, Button } from 'native-base';
 import { useSelector } from 'react-redux'
 
 import DetailCard from "../../components/DetailCard";
@@ -9,9 +9,9 @@ import useFetch from "../../hooks/useFetch";
 export default function ControlCenterScreen({ navigation, route }: any) {
     // const { token, id } = route.params;
     const token = useSelector((s: any) => s.userToken);
-    const id = useSelector((s: any) =>  s.gardenId )
+    const id = useSelector((s: any) => s.gardenId)
+    const [modalVisible, setModalVisible] = useState(false);
 
-    
     const { resFetchData, fetchLoading, fetchError, fetchData }: any = useFetch();
 
     const handleFetch = () => {
@@ -23,7 +23,12 @@ export default function ControlCenterScreen({ navigation, route }: any) {
     }, [route.params])
 
     const handleDiseaseDetected = () => {
-        navigation.navigate("Details",{data:resFetchData.data});
+        navigation.navigate("Details", { data: resFetchData.data });
+
+    }
+    const handleScan = () => {
+        console.log("Tarama Başlat");
+        setModalVisible(true);
 
     }
     if (!fetchLoading && !fetchError && resFetchData) {
@@ -45,8 +50,17 @@ export default function ControlCenterScreen({ navigation, route }: any) {
                         nextAutomaticScreeningTime={resFetchData.data.garden.scan.next}
                         sprayedTrees={null}
                         onPress={handleDiseaseDetected}
+                        onScan={handleScan}
                     />
                 </ScrollView>
+
+                <Modal isOpen={modalVisible} onClose={() => setModalVisible(!modalVisible)} safeAreaTop={true}  >
+
+                    <Modal.Content>
+
+                    </Modal.Content>
+                </Modal>
+
             </NativeBaseProvider>
         )
 

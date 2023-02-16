@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NativeBaseProvider, Text, Box, FlatList, Modal, Input, Button, ScrollView } from 'native-base';
+import { NativeBaseProvider, Text, Box, FlatList, Modal, Input, Button } from 'native-base';
 import { Formik } from 'formik';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -23,11 +23,10 @@ export default function HomeScreen({ navigation, route }: any) {
     const { fetchData, fetchLoading, fetchError, resFetchData }: any = useFetch();
     const handleSelectedGarden = (id: String, name: String) => {
         dispatch({ type: "ADD_GARDEN", payload: { gardenId: id, gardenName: name } });
-
         navigation.navigate("ControlStack", { screen: "ControlCenter", params: { token, id, name } })
     }
-    const handleData = () => {
-        fetchData("/get-gardens", token);
+    const handleData = async () => {
+        await fetchData("/get-gardens", token);
     }
     const [modalVisible, setModalVisible] = useState(false);
     const handlePress = () => {
@@ -54,7 +53,7 @@ export default function HomeScreen({ navigation, route }: any) {
             <Box flex={1} bgColor={"#F1EBEB"}>
                 {
                     resFetchData.data && resFetchData.data.length > 0 ?
-                        <FlatList ListFooterComponent={<Box mt={9} />} ListHeaderComponent={<Text fontSize={"lg"} mt={3}>Hoşgeldin Salih</Text>} data={resFetchData.data} renderItem={({ item }: any) => <GardenCard name={item.name} description={item.status} onPress={() => handleSelectedGarden(item.id, item.name)} />} />
+                        <FlatList ListFooterComponent={<Box mt={9} />} ListHeaderComponent={<Text fontSize={"lg"} mt={3}>Hoşgeldin {name}</Text>} data={resFetchData.data} renderItem={({ item }: any) => <GardenCard name={item.name} description={item.status} onPress={() => handleSelectedGarden(item.id, item.name)} />} />
 
                         :
                         <>

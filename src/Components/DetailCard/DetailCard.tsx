@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './DetailCard.style';
 import Button from '../Button';
 
-export default function ScanCard({ numberOfTrees, numberOfDiseasedTrees, diseasesDetected, usedMedicinesToBe, automaticSpraying, status, nextAutomaticScreeningTime, sprayedTrees, onPress }: any) {
+export default function ScanCard({ numberOfTrees, numberOfDiseasedTrees, diseasesDetected, usedMedicinesToBe, automaticSpraying, status, nextAutomaticScreeningTime, sprayedTrees, onPress, onScan }: any) {
     return (
         <View style={styles.container}>
             <View style={styles.body}>
@@ -74,7 +74,7 @@ export default function ScanCard({ numberOfTrees, numberOfDiseasedTrees, disease
             </View>
 
             <View style={styles.body}>
-                <Button name="Tarama Başlat" />
+                <Button name="Tarama Başlat" onPress={onScan} />
             </View>
 
         </View>

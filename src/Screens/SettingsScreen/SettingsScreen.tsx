@@ -1,46 +1,61 @@
 import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
-import { Text } from 'react-native-svg';
 import { useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native'
 
 import SettingsCard from '../../components/SettingsCard';
 import useFetch from '../../hooks/useFetch';
+import usePost from '../../hooks/usePost';
 
 export default function SettingsScreen() {
-    const { fetchData, fetchLoading, fetchError, resFetchData } = useFetch();
-    const token = useSelector((s: any) => s.userToken);
-    const handleFetch = () => {
-        fetchData("/get-garden-settings", token);
-    }
 
+    const { fetchData, fetchLoading, fetchError, resFetchData } = useFetch();
+    const { resData, loading, error, postData } = usePost();
+    const token = useSelector((s: any) => s.userToken);
+    const handleFetch = async () => {
+        await fetchData("/get-garden-settings", token);
+    }
+    const isFocused = useIsFocused();
     useEffect(() => {
         handleFetch();
-    }, [])
+    }, [isFocused])
 
-    const handlePress = () => {
-        console.log("Güncellendi");
-
+    const handlePress = async (values: any) => {
+        console.log(values);
+        await postData("/update-garden-settings", values, token);
+        console.log(resData);
     }
-    return (
-        <View style={{ flex: 1 }}>
-            <FlatList
-                data={resFetchData.data}
-                keyExtractor={item => item.gardenId}
-                renderItem={({ item }) => {
-                    return (
-                        <SettingsCard
-                            gardenName={item.gardenName}
 
-                            getAutomaticScan={item.automaticScan}
+    if (!fetchLoading && resFetchData) {
+        console.log(resFetchData);
+        return (
+            <View style={{ flex: 1 }}>
+                <FlatList
+                    data={resFetchData.data.gardens}
+                    keyExtractor={item => item.gardenId}
+                    maxToRenderPerBatch={2}
+                    initialNumToRender={2}
+                    renderItem={({ item }) => {
+                        return (
+                            <SettingsCard
+                                gardenId={item.gardenId}
 
-                            getAutomaticSpraying={item.automaticSpraying}
+                                gardenName={item.gardenName}
 
-                            onPress={handlePress}
-                        />
-                    );
-                }}
-                ListFooterComponent={<View style={{ margin: 10, }} />}
-            />
-        </View>
-    );
+                                getAutomaticScan={item.automaticScan}
+
+                                getAutomaticSpraying={item.automaticSpraying}
+                                getScanPeriode={item.scanPeriode}
+                                onPress={handlePress}
+                                getPesticides={resFetchData.data.pesticides}
+                                getSlots={item.slots}
+                                handlePress={handlePress}
+                            />
+                        );
+                    }}
+                    ListFooterComponent={<View style={{ margin: 10, }} />}
+                />
+            </View>
+        );
+    }
 }
