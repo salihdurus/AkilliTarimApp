@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NativeBaseProvider, ScrollView, Text, Modal, Button } from 'native-base';
 import { useSelector } from 'react-redux'
+import io from "socket.io-client";
 
 import DetailCard from "../../components/DetailCard";
 import ScanCard from "../../components/ScanCard";
